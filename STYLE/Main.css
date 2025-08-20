@@ -1,0 +1,22 @@
+:root{
+	--DEVICE_ITEM_WIDTH: 200px;
+	--DEVICE_ITEM_HEIGHT: 300px;
+}
+
+.DEVICE_LIST{
+	display: grid;
+
+	justify-content: center;
+	align-content: center;
+	grid-template-columns: repeat(auto-fit, var(--DEVICE_ITEM_WIDTH));
+	gap: 20px;
+}
+
+.DEVICE_ITEM{
+	width: var(--DEVICE_ITEM_WIDTH);
+	height: var(--DEVICE_ITEM_HEIGHT);
+
+	background-color: aliceblue;
+
+	padding: 10px;
+}
