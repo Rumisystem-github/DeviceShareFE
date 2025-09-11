@@ -27,7 +27,10 @@ async function main() {
 		device_list = await get_self_device_list();
 		for (let i = 0; i < device_list.length; i++) {
 			const item = device_list[i];
-			el.SELF.DEVICE_LIST.appendChild(await genui_device_item(item));
+			const info = await get_device_info(item.ID);
+			el.SELF.DEVICE_LIST.appendChild(await genui_device_item(item, info));
 		}
 	}
+
+	await ConnectStreamingAPI();
 }
