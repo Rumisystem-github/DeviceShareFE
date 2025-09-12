@@ -10,10 +10,10 @@ async function genui_device_item(device, info) {
 	return html_to_dom(`
 		<DIV CLASS="DEVICE_ITEM" data-id="${device.ID}">
 			<IMG SRC="">
-			<DIV>${htmlspecialchars(device.NAME)}</DIV>
-			<DIV>登録日時:${htmlspecialchars(device.DATE)}</DIV>
-			<DIV>更新日時:${htmlspecialchars(device.UPDATE)}</DIV>
-			<DIV>
+			<DIV CLASS="NAME">${htmlspecialchars(device.NAME)}</DIV>
+			<DIV CLASS="REGIST_DATE">登録日時:${htmlspecialchars(device.DATE)}</DIV>
+			<DIV CLASS="UPDATE_DATE">更新日時:${htmlspecialchars(device.UPDATE)}</DIV>
+			<DIV CLASS="INFO">
 				${function(){
 					let body = "";
 					const key_list = Object.keys(info);
@@ -23,10 +23,10 @@ async function genui_device_item(device, info) {
 
 						switch (key) {
 							case "CPU_USE":
-								body += `<DIV>CPU:(${field["CPU"]}%)<PROGRESS MIN="0" MAX="100" VALUE="${field["CPU"]}"></PROGRESS><DIV>`;
+								body += `<DIV CLASS="INFO_CONTENTS" data-type="CPU_USE">${genui_device_info_cpuuse(field["CPU"])}</DIV>`;
 								break;
 							case "MEMORY":
-								body += `<DIV>RAM:(${format_byte(Number.parseInt(field["MAX"]))}/${format_byte(Number.parseInt(field["USE"]))})<PROGRESS MIN="0" MAX="${field["MAX"]}" VALUE="${field["USE"]}"></PROGRESS><DIV>`;
+								body += `<DIV CLASS="INFO_CONTENTS" data-type="MEMORY">${genui_device_info_memory(Number.parseInt(field["MAX"]), Number.parseInt(field["USE"]))}<DIV>`;
 								break;
 						}
 					}
@@ -35,6 +35,14 @@ async function genui_device_item(device, info) {
 			</DIV>
 		</DIV>
 	`);
+}
+
+function genui_device_info_cpuuse(use) {
+	return `CPU:(${use}%)<PROGRESS MIN="0" MAX="100" VALUE="${use}"></PROGRESS>`;
+}
+
+function genui_device_info_memory(max, use) {
+	return `RAM:(${format_byte(max)}\\${format_byte(use)})<PROGRESS MIN="0" MAX="${max}" VALUE="${use}"></PROGRESS>`;
 }
 
 function format_byte(byte) {

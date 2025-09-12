@@ -21,7 +21,29 @@ async function ConnectStreamingAPI() {
 			const body = JSON.parse(e.data);
 			if (body.TYPE != null) {
 				if (body.TYPE == "UPDATE") {
+					const device_el = document.querySelector(`[data-id="${body.DEVICE}"]`);
+					if (device_el == null) return;
+					const info_el = device_el.querySelector(".INFO");
+					if (info_el == null) return;
+					let contents = info_el.querySelector(`.INFO_CONTENTS[data-type="${body.INFO.TYPE}"`);
+					if (contents == null) return;
 
+					//値をパース
+					let value = {};
+					body.INFO.VALUE.split("\n").forEach(line => {
+						const k = line.split("=")[0];
+						const v = line.split("=")[1];
+						value[k] = v;
+					});
+
+					switch (body.INFO.TYPE) {
+						case "CPU_USE":
+							contents.innerHTML = genui_device_info_cpuuse(value["CPU"]);
+							return;
+						case "MEMORY":
+							contents.innerHTML = genui_device_info_memory(Number.parseInt(value["MAX"]), Number.parseInt(value["USE"]));
+							return;
+					}
 				}
 			}
 		});
