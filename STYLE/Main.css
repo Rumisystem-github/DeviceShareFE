@@ -1,6 +1,28 @@
 :root{
-	--DEVICE_ITEM_WIDTH: 200px;
-	--DEVICE_ITEM_HEIGHT: 300px;
+	--BACKGROUND_COLOR: #daebfb;
+	--PRIMARY_COLOR: #89bff0;
+	--SECCOND_COLOR: #acbade;
+
+	--DEVICE_ITEM_WIDTH: 400px;
+	--DEVICE_ITEM_HEIGHT: 400px;
+}
+
+body{
+	background: var(--BACKGROUND_COLOR);
+}
+
+.HEADER{
+	width: 100vw;
+
+	padding: 5px;
+	padding-left: 10px;
+	padding-right: 10px;
+
+	background-color: var(--PRIMARY_COLOR);
+}
+
+.CONTENTS{
+	padding: 20px;
 }
 
 .DEVICE_LIST{
@@ -19,4 +41,10 @@
 	background-color: aliceblue;
 
 	padding: 10px;
+
+	overflow-y: auto;
+}
+
+.DEVICE_ITEM > .LOGO{
+	margin: 5px;
 }

@@ -1,3 +1,8 @@
+const os_logo = {
+	"UNDEFINED": "/Asset/Logo/undefined.png",
+	"DEBIAN": "/Asset/Logo/debian.svg"
+};
+
 function html_to_dom(html) {
 	const parser = new DOMParser();
 	const doc = parser.parseFromString(html, "text/html");
@@ -9,7 +14,7 @@ function html_to_dom(html) {
 async function genui_device_item(device, info) {
 	return html_to_dom(`
 		<DIV CLASS="DEVICE_ITEM" data-id="${device.ID}">
-			<IMG SRC="">
+			<IMG CLASS="LOGO" SRC="${os_logo["DEBIAN"]}">
 			<DIV CLASS="NAME">${htmlspecialchars(device.NAME)}</DIV>
 			<DIV CLASS="REGIST_DATE">登録日時:${htmlspecialchars(device.DATE)}</DIV>
 			<DIV CLASS="UPDATE_DATE">更新日時:${htmlspecialchars(device.UPDATE)}</DIV>
@@ -38,11 +43,17 @@ async function genui_device_item(device, info) {
 }
 
 function genui_device_info_cpuuse(use) {
-	return `CPU:(${use}%)<PROGRESS MIN="0" MAX="100" VALUE="${use}"></PROGRESS>`;
+	return `
+		<DIV>CPU:(${use}%)</DIV>
+		<PROGRESS MIN="0" MAX="100" VALUE="${use}"></PROGRESS>
+	`;
 }
 
 function genui_device_info_memory(max, use) {
-	return `RAM:(${format_byte(max)}\\${format_byte(use)})<PROGRESS MIN="0" MAX="${max}" VALUE="${use}"></PROGRESS>`;
+	return `
+		<DIV>RAM:(${format_byte(max)}\\${format_byte(use)})</DIV>
+		<PROGRESS MIN="0" MAX="${max}" VALUE="${use}"></PROGRESS>
+	`;
 }
 
 function format_byte(byte) {
