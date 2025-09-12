@@ -1,12 +1,12 @@
-let WS = null;
+let ws = null;
 
 async function ConnectStreamingAPI() {
 	return new Promise((resolve, reject) => {
 		let PingTimer = null;
-		WS = new WebSocket("/api/ws");
+		ws = new WebSocket("/api/ws");
 
-		WS.addEventListener("open", (e)=>{
-			RunStreamingCommand(["HELO", session]).then((Return)=>{
+		ws.addEventListener("open", (e)=>{
+			RunStreamingCommand(["HELO", "TOKEN", session]).then((Return)=>{
 				if (Return.STATUS) {
 					//成功応答
 					resolve();
@@ -17,14 +17,16 @@ async function ConnectStreamingAPI() {
 			});
 		});
 
-		WS.addEventListener("message", async (e)=>{
-			const Body = JSON.parse(e.data);
-			if (Body.TYPE != null) {
-				console.log("受信", Body);
+		ws.addEventListener("message", async (e)=>{
+			const body = JSON.parse(e.data);
+			if (body.TYPE != null) {
+				if (body.TYPE == "UPDATE") {
+
+				}
 			}
 		});
 
-		WS.addEventListener("close", (e)=>{
+		ws.addEventListener("close", (e)=>{
 			console.log("切断されました");
 			//初期化
 			clearInterval(PingTimer);
@@ -34,19 +36,19 @@ async function ConnectStreamingAPI() {
 	})
 }
 
-async function RunStreamingCommand(CMD) {
+async function RunStreamingCommand(cmd) {
 	return new Promise((resolve, reject) => {
-		const ID = self.crypto.randomUUID();
+		const id = self.crypto.randomUUID();
 
 		function Receive(e) {
-			const Body = JSON.parse(e.data);
-			if (Body.REQUEST == ID) {
-				resolve(Body);
-				WS.removeEventListener("message", Receive);
+			const body = JSON.parse(e.data);
+			if (body.REQUEST == id) {
+				resolve(body);
+				ws.removeEventListener("message", Receive);
 			}
 		}
 
-		WS.addEventListener("message", Receive);
-		WS.send(JSON.stringify([ID].concat(CMD)));
+		ws.addEventListener("message", Receive);
+		ws.send(JSON.stringify([id].concat(cmd)));
 	})
 }
