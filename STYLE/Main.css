@@ -1,7 +1,6 @@
 :root{
 	--BACKGROUND_COLOR: #daebfb;
 	--PRIMARY_COLOR: #89bff0;
-	--SECCOND_COLOR: #acbade;
 
 	--DEVICE_ITEM_WIDTH: 400px;
 	--DEVICE_ITEM_HEIGHT: 400px;
@@ -9,6 +8,15 @@
 
 body{
 	background: var(--BACKGROUND_COLOR);
+}
+
+button{
+	border: none;
+	background: #70afeb;
+}
+
+button:hover, button:active{
+	background: #5aa6ec;
 }
 
 .HEADER{

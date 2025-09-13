@@ -1,0 +1,8 @@
+#URL書き換えエンジンを有効化(必須)
+RewriteEngine On
+
+#インデックス
+RewriteRule ^$ index.html [L]
+
+#ビュー
+RewriteRule ^user/[^/]+$ user.html [L]

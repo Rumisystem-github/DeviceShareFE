@@ -6,15 +6,31 @@ async function ConnectStreamingAPI() {
 		ws = new WebSocket("/api/ws");
 
 		ws.addEventListener("open", (e)=>{
-			RunStreamingCommand(["HELO", "TOKEN", session]).then((Return)=>{
-				if (Return.STATUS) {
-					//成功応答
-					resolve();
-				} else {
-					//失敗応答
-					reject();
-				}
-			});
+			if (window.location.pathname.startsWith("/user/")) {
+				get_account_from_uid(window.location.pathname.replace("/user/", "")).then((user)=>{
+					//他のユーザーのデバイス用に接続する
+					RunStreamingCommand(["HELO", "USER", user.ID]).then((Return)=>{
+						if (Return.STATUS) {
+							//成功応答
+							resolve();
+						} else {
+							//失敗応答
+							reject();
+						}
+					});
+				});
+			} else {
+				//ログイン(自分のデバイス用に接続する)
+				RunStreamingCommand(["HELO", "TOKEN", session]).then((Return)=>{
+					if (Return.STATUS) {
+						//成功応答
+						resolve();
+					} else {
+						//失敗応答
+						reject();
+					}
+				});
+			}
 		});
 
 		ws.addEventListener("message", async (e)=>{
