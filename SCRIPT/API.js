@@ -31,6 +31,24 @@ async function get_account_from_uid(UID) {
 	}
 }
 
+async function regist_device(name) {
+	let ajax = await fetch("/api/Device", {
+		method: "POST",
+		headers: {
+			TOKEN: session
+		},
+		body: JSON.stringify({
+			"NAME": name
+		})
+	});
+	const result = await ajax.json();
+	if (result.STATUS) {
+		return result.ID;
+	} else {
+		throw new Error("APIError:" + result.ERR);
+	}
+}
+
 async function get_self_device_list() {
 	let ajax = await fetch("/api/Device", {
 		headers: {

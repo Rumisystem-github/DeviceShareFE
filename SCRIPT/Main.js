@@ -72,3 +72,11 @@ function date_format(str) {
 
 	return `${am_pm}${hour}時${date.getMinutes()}分${date.getSeconds()}秒`;
 }
+
+async function device_regist() {
+	const name = await dialog.INPUT("デバイス名", {TYPE:"TEXT", NAME:""});
+	if (name == null) return;
+
+	const regist_id = await regist_device(name);
+	await dialog.DIALOG("登録IDを発行しました\n[" + regist_id + "]");
+}
