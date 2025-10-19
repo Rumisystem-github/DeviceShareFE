@@ -18,16 +18,10 @@ window.addEventListener("load", (E) => {
 });
 
 async function main() {
-	session = ReadCOOKIE().SESSION;
-	if (session !== null) {
-		account_data = await LOGIN(session);
-		if (account_data === false) {
-			window.location.href = LOGIN_PAGE;
-		}
-	}
-
 	if (window.location.pathname.startsWith("/user/")) {
 		const user = await get_account_from_uid(window.location.pathname.replace("/user/", ""));
+		document.querySelector(".HEADER").querySelector("H1").innerText = user.NAME + "のデバイス"
+
 		device_list = await get_public_device_list(user.ID);
 		for (let i = 0; i < device_list.length; i++) {
 			const item = device_list[i];
@@ -35,7 +29,13 @@ async function main() {
 			el.SELF.DEVICE_LIST.appendChild(await genui_device_item(item, info));
 		}
 	} else {
-		if (session == null) return;
+		session = ReadCOOKIE().SESSION;
+		if (session !== null) {
+			account_data = await LOGIN(session);
+			if (account_data === false) {
+				window.location.href = LOGIN_PAGE;
+			}
+		}
 
 		device_list = await get_self_device_list();
 		for (let i = 0; i < device_list.length; i++) {
@@ -56,4 +56,19 @@ async function share_url() {
 
 	await navigator.clipboard.writeText(`https://${window.location.host}/user/${account_data.UID}`);
 	dialog.DIALOG("コピーしました");
+}
+
+function date_format(str) {
+	const date = new Date(str);
+	let am_pm = "";
+	let hour = date.getHours();
+
+	if (hour <= 12) {
+		am_pm = "午前";
+	} else {
+		am_pm = "午後";
+		hour -= 12;
+	}
+
+	return `${am_pm}${hour}時${date.getMinutes()}分${date.getSeconds()}秒`;
 }

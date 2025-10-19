@@ -43,6 +43,10 @@ async function ConnectStreamingAPI() {
 					if (info_el == null) return;
 					let contents = info_el.querySelector(`.INFO_CONTENTS[data-type="${body.INFO.TYPE}"`);
 					if (contents == null) return;
+					let update_date = device_el.querySelector(".UPDATE_DATE");
+					if (update_date == null) return;
+
+					update_date.innerText = "更新日時:"+date_format(new Date());
 
 					//値をパース
 					let value = {};

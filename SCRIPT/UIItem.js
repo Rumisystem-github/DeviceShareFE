@@ -16,8 +16,8 @@ async function genui_device_item(device, info) {
 		<DIV CLASS="DEVICE_ITEM" data-id="${device.ID}">
 			<IMG CLASS="LOGO" SRC="${os_logo["DEBIAN"]}">
 			<DIV CLASS="NAME">${htmlspecialchars(device.NAME)}</DIV>
-			<DIV CLASS="REGIST_DATE">登録日時:${htmlspecialchars(device.DATE)}</DIV>
-			<DIV CLASS="UPDATE_DATE">更新日時:${htmlspecialchars(device.UPDATE)}</DIV>
+			<DIV CLASS="REGIST_DATE">登録日時:${date_format(device.DATE)}</DIV>
+			<DIV CLASS="UPDATE_DATE">更新日時:${date_format(device.UPDATE)}</DIV>
 			<DIV CLASS="INFO">
 				${function(){
 					let body = "";
